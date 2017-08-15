@@ -97,16 +97,16 @@ class NeuralNetwork(object):
             output_error = y - final_outputs  # Output layer error is the difference between desired target and actual output.
 
             # TODO: Calculate the hidden layer's contribution to the error
-            hidden_error = output_error * self.weights_hidden_to_output.T * (self.activation_function(hidden_inputs) * (1 - self.activation_function(hidden_inputs)))
+            hidden_error = output_error * self.weights_hidden_to_output.T
 
             # TODO: Backpropagated error terms - Replace these values with your calculations.
-            output_error_term = output_error * final_outputs * (1 - final_outputs)
-            hidden_error_term = hidden_error * hidden_outputs * (1 - hidden_outputs)
+            output_error_term = output_error
+            hidden_error_term = hidden_error * (hidden_outputs * (1 - hidden_outputs))
 
             # Weight step (input to hidden)
-            delta_weights_i_h += hidden_error * X[:, None]
+            delta_weights_i_h += hidden_error_term * X[:, None]
             # Weight step (hidden to output)
-            delta_weights_h_o += output_error * hidden_outputs[:, None]
+            delta_weights_h_o += output_error_term * hidden_outputs[:, None]
 
         # TODO: Update the weights - Replace these values with your calculations.
         self.weights_hidden_to_output += self.lr * delta_weights_h_o / n_records  # update hidden-to-output weights with gradient descent step
